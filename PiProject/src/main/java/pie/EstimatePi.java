@@ -75,7 +75,7 @@ class EstimatePi {
 	}
 
 	/*
-	 * Interactive mode; input n, output pi and duration
+	 * Interactive CLI mode; input n, output pi and duration
 	 */
 	private static void start() {
 		// Get user input
@@ -84,13 +84,15 @@ class EstimatePi {
 		int nTerms = 0;
 
 		while (true) {
-			System.out.print("\nn = ");
+			System.out.println();
+			System.out.print("   n  = ");
 			try {
 				nTerms = scanner.nextInt();
 
 				if (nTerms < 1 || nTerms > max_n) {
 					System.out.println("n must be between 1 and " + max_n + ", please try again");
 				} else {
+					// TODO add stopwatch
 					calculateSum(nTerms);
 
 					pi = 4 * sum;

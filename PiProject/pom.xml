@@ -6,6 +6,13 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>PiProject</name>
 	<description>A program to produce an approximation of Pi.</description>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
@@ -16,7 +23,9 @@
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
+
 			</plugin>
 		</plugins>
 	</build>
+
 </project>
