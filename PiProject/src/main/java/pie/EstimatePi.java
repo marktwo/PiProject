@@ -28,6 +28,7 @@ import java.util.Scanner;
 class EstimatePi {
 
 	// Maximum number of terms to use in series
+	// Note: system limit is: 2^32 - 1
 	static int max_n = 0;
 
 	// sum of the series
@@ -46,7 +47,7 @@ class EstimatePi {
 
 		pi = 4 * sum;
 
-		System.out.println("pi = " + pi);
+		System.out.println("-> pi = " + pi);
 	}
 
 	/*
@@ -83,14 +84,18 @@ class EstimatePi {
 		int nTerms = 0;
 
 		while (true) {
-			System.out.print("n = ");
+			System.out.print("\nn = ");
 			try {
 				nTerms = scanner.nextInt();
 
 				if (nTerms < 1 || nTerms > max_n) {
-					System.out.println("n must be between 1 and " + max_n + " ,please try again");
+					System.out.println("n must be between 1 and " + max_n + ", please try again");
 				} else {
-					calculatePi(nTerms);
+					calculateSum(nTerms);
+
+					pi = 4 * sum;
+					System.out.println("-> pi = " + pi);
+					sum = 0;
 				}
 			} catch (InputMismatchException e) {
 				System.out.println("Done.");
@@ -99,21 +104,11 @@ class EstimatePi {
 		}
 	}
 
-	private static void calculatePi(int n) {
+	// calculate the sum of the series
+	private static void calculateSum(int terms) {
 		// TODO Auto-generated method stub
-		System.out.println("calculated pi");
-	}
-
-	/*
-	 * Calculates the Sum part of the series sum[(-1)^n/2n-1]
-	 */
-	private static double piSum(int n) {
-
-		if (n < 0) {
-			return 0;
-		} else {
-			return ((Math.pow(-1, n)) / ((2 * n) + 1)) + piSum(n - 1);
+		for (int n = 0; n <= terms; n++) {
+			sum += ((Math.pow(-1, n)) / ((2 * n) + 1));
 		}
-
 	}
 }
