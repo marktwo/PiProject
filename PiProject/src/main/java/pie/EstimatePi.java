@@ -10,6 +10,7 @@
 
 package pie;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -35,17 +36,24 @@ class EstimatePi {
 	// calculated estimate of pi
 	static double pi = 0;
 
+	// Scanner for user input
+	static Scanner scanner = new Scanner(System.in);
+
 	public static void main(String[] args) {
 
 		init(args);
 		start();
 
-		// Default number of terms
-		int numberTerms = 9000;
+		pi = 4 * sum;
 
-		double pi = 0;
+		System.out.println("pi = " + pi);
+	}
 
-		// only one argument required, max_n
+	/*
+	 * initialise this instance; get max_n
+	 */
+	private static void init(String[] args) {
+		// only one argument required; max_n
 		if (args.length == 0 || args.length > 1) {
 			System.out.println("Usage: estimatepi max_n\nWhere max_n is the maximum number of terms in the series.");
 			System.out.println("Example: estimatepi 100000");
@@ -58,64 +66,42 @@ class EstimatePi {
 					System.out.println("max_n must be a positive number, please try again.");
 					System.exit(0);
 				}
-
-				// interactive mode; input n, output pi and duration
-				Scanner scanner = new Scanner(System.in);
-				int nTerms = 0;
-
-				while (nTerms >= 0) {
-					System.out.println("Enter the number of terms to use.");
-					System.out.print("n = ");
-					nTerms = scanner.nextInt();
-
-				}
-
-				// TODO use Scanner
-				System.out.println("Enter number of terms to use in series (-1 to quit).");
-
-				// user input need Scanner
-				System.out.println("n = ");
-
 			} catch (NumberFormatException e) {
 				System.out.println("max_n must be a number, please try again.");
 				System.exit(0);
 			}
-
 		}
-
-		pi = 4 * piSum(numberTerms);
-
-		System.out.println("pi = " + pi);
 	}
 
-	// initialise this instance; get max_n
-	private static void init(String[] args) {
-		// only one argument required, max_n
-		if (args.length == 0 || args.length > 1) {
-			System.out.println("Usage: estimatepi max_n\nWhere max_n is the maximum number of terms in the series.");
-			System.out.println("Example: estimatepi 100000");
-		} else {
-			try {
-				max_n = Integer.parseInt(args[0]);
+	/*
+	 * Interactive mode; input n, output pi and duration
+	 */
+	private static void start() {
+		// Get user input
+		System.out.println("Enter number of terms to use in series (x to quit).");
 
-				if (max_n < 1) {
-					System.out.println("max_n must be a positive number, please try again.");
+		int nTerms = 0;
+
+		while (true) {
+			System.out.print("n = ");
+			try {
+				nTerms = scanner.nextInt();
+
+				if (nTerms < 1 || nTerms > max_n) {
+					System.out.println("n must be between 1 and " + max_n + " ,please try again");
+				} else {
+					calculatePi(nTerms);
 				}
-			} catch (NumberFormatException e) {
-				System.out.println("max_n must be a number, please try again.");
+			} catch (InputMismatchException e) {
+				System.out.println("Done.");
+				System.exit(0);
 			}
 		}
-		System.exit(0);
 	}
 
-	private static void start() {
+	private static void calculatePi(int n) {
 		// TODO Auto-generated method stub
-
-	}
-
-	private static void calculatePi() {
-		// TODO Auto-generated method stub
-
+		System.out.println("calculated pi");
 	}
 
 	/*
