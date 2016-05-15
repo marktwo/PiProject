@@ -26,7 +26,7 @@ import java.util.Scanner;
  * @version 1.0
  */
 class EstimatePi {
-
+	
 	// Maximum number of terms to use in series
 	// Note: system limit is: 2^32 - 1
 	static int max_n = 0;
@@ -76,6 +76,7 @@ class EstimatePi {
 	private static void start() {
 		// Get user input
 		System.out.println("Enter number of terms to use in series (x to quit).");
+		System.out.println("max_n = " + max_n);
 
 		int nTerms = 0;
 
@@ -90,7 +91,7 @@ class EstimatePi {
 				} else {
 					long tStart = System.currentTimeMillis();
 					
-					calculateSum(nTerms);
+					calculateSeriesTotal(nTerms);
 
 					long tDelta = System.currentTimeMillis() - tStart;
 					
@@ -107,7 +108,7 @@ class EstimatePi {
 	}
 
 	// calculate the sum of the series
-	private static void calculateSum(int terms) {
+	private static void calculateSeriesTotal(int terms) {
 		// TODO Auto-generated method stub
 		for (int n = 0; n <= terms; n++) {
 			sum += ((Math.pow(-1, n)) / ((2 * n) + 1));
