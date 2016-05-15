@@ -31,7 +31,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 class EstimatePi {
 
 	static final String USAGE = "Usage: estimatepi max_n";
-	static final String MSG_WRONG_NUMBER_ARGS = "Only 1 arg is required";
+	static final String MSG_WRONG_NUMBER_ARGS = "1 arg is required";
 	static final String MSG_MAX_N_POSITIVE = "max_n must be a positive number.";
 	static final String MSG_MAX_N_NUMBER = "max_n must be a number.";
 
@@ -69,7 +69,7 @@ class EstimatePi {
 		boolean result = false;
 
 		// only one argument required; max_n
-		if (userArgs.length == 0 || userArgs.length > 1) {
+		if (userArgs == null || userArgs.length == 0 || userArgs.length > 1) {
 			errorMsg = MSG_WRONG_NUMBER_ARGS;
 		} else {
 			try {
