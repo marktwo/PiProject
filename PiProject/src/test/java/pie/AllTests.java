@@ -12,13 +12,18 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({})
 public class AllTests {
 
-	private static EstimatePi estimate;
+	private EstimatePi app;
 
 	@BeforeClass
-	public static void beforeEachTest() {
+	public void beforeEachTest() {
 		System.out.println("beforeEachTest");
-		estimate = new EstimatePi();
-		System.out.println(EstimatePi.max_n);
+		app = new EstimatePi();
+	}
+	
+	@Test
+	public void testNoArgs() {
+		app.init(null);
+		assertEquals("test", "fail");
 	}
 
 	@Test

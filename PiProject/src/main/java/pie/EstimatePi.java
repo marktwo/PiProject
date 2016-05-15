@@ -30,53 +30,81 @@ import net.objecthunter.exp4j.ExpressionBuilder;
  */
 class EstimatePi {
 
-	// Maximum number of terms to use in series
-	// Note: system limit is: 2^32 - 1
-	static int max_n = 0;
-
-	// sum of the series
-	static double sum = 0;
-
-	// calculated estimate of pi
-	static double pi = 0;
+	static final String USAGE = "Usage: estimatepi max_n";
+	static final String MSG_WRONG_NUMBER_ARGS = "Only 1 arg is required";
+	static final String MSG_MAX_N_POSITIVE = "max_n must be a positive number.";
+	static final String MSG_MAX_N_NUMBER = "max_n must be a number.";
 
 	// Scanner for user input
-	static Scanner scanner = new Scanner(System.in);
+	static Scanner scanner = null;
+
+	private static EstimatePi est = null;
+
+	// Maximum number of terms to use in series
+	// Note: system limit is: 2^32 - 1
+	private int max_n = 0;
+
+	// sum of the series
+	private double sum = 0;
+
+	// calculated estimate of pi
+	private double pi = 0;
+
+	private String errorMsg = "";
+
+	public EstimatePi() {
+		scanner = new Scanner(System.in);
+	}
 
 	public static void main(String[] args) {
 
-		init(args);
-		start();
+		est = new EstimatePi();
+		est.init(args);
 	}
 
 	/*
-	 * initialise this instance; get max_n
+	 * Validate the input args; get max_n
 	 */
-	private static void init(String[] userArgs) {
+	private boolean validate(String[] userArgs) {
+		boolean result = false;
+
 		// only one argument required; max_n
 		if (userArgs.length == 0 || userArgs.length > 1) {
-			System.out.println("Usage: estimatepi max_n\nWhere max_n is the maximum number of terms in the series.");
-			System.out.println("Example: estimatepi 100000");
-			System.exit(0);
+			errorMsg = MSG_WRONG_NUMBER_ARGS;
 		} else {
 			try {
 				max_n = Integer.parseInt(userArgs[0]);
 
-				if (max_n < 1) {
-					System.out.println("max_n must be a positive number, please try again.");
-					System.exit(0);
+				if (max_n >= 1) {
+					result = true;
+				} else {
+					errorMsg = MSG_MAX_N_POSITIVE;
 				}
 			} catch (NumberFormatException e) {
-				System.out.println("max_n must be a number, please try again.");
-				System.exit(0);
+				errorMsg = MSG_MAX_N_NUMBER;
 			}
+		}
+
+		return result;
+	}
+
+	/*
+	 * initialise this instance
+	 */
+	public void init(String[] userArgs) {
+		if (validate(userArgs)) {
+			est.start();
+		} else {
+			System.out.println(errorMsg);
+			System.out.println(USAGE);
+			System.exit(1);
 		}
 	}
 
 	/*
 	 * Interactive CLI mode; input n, output pi and duration
 	 */
-	private static void start() {
+	private void start() {
 		// Get user input
 		System.out.println("Enter number of terms to use in series (x to quit).");
 		System.out.println("max_n = " + max_n);
@@ -111,15 +139,15 @@ class EstimatePi {
 	}
 
 	// calculate the sum of the series
-	private static void calculateSeriesTotal(int terms) {
+	private void calculateSeriesTotal(int terms) {
 		// use exp4j for evaluating mathematical expression
 		// probably overkill for a simple expression
 		Expression ex = new ExpressionBuilder("(-1)^n / (2n + 1)").variables("n").build();
-		
+
 		for (int n = 0; n <= terms; n++) {
 			ex.setVariable("n", n);
 			sum += ex.evaluate();
 		}
-		
+
 	}
 }
