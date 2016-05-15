@@ -44,10 +44,6 @@ class EstimatePi {
 
 		init(args);
 		start();
-
-		pi = 4 * sum;
-
-		System.out.println("-> pi = " + pi);
 	}
 
 	/*
@@ -92,11 +88,15 @@ class EstimatePi {
 				if (nTerms < 1 || nTerms > max_n) {
 					System.out.println("n must be between 1 and " + max_n + ", please try again");
 				} else {
-					// TODO add stopwatch
+					long tStart = System.currentTimeMillis();
+					
 					calculateSum(nTerms);
 
+					long tDelta = System.currentTimeMillis() - tStart;
+					
 					pi = 4 * sum;
 					System.out.println("-> pi = " + pi);
+					System.out.println("-> t  = " + tDelta + " milliseconds");
 					sum = 0;
 				}
 			} catch (InputMismatchException e) {
