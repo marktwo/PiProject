@@ -23,10 +23,10 @@ import net.objecthunter.exp4j.ExpressionBuilder;
  * 
  * The maximum number of terms to use in the series can be specified.
  * 
- * The number of terms (n) can specified.
+ * The number of terms (n) can be specified.
  * 
  * @author Mark Murray
- * @version 1.0
+ * @version 2.0
  */
 class EstimatePi {
 
@@ -61,7 +61,7 @@ class EstimatePi {
 		est = new EstimatePi();
 		est.init(args);
 	}
-	
+
 	// required to support testing
 	// need to overide System.exit(), so that test runs to completion
 	public void exitApp(int exitCode) {
@@ -154,6 +154,5 @@ class EstimatePi {
 			ex.setVariable("n", n);
 			sum += ex.evaluate();
 		}
-
 	}
 }
