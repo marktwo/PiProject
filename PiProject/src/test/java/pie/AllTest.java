@@ -2,7 +2,6 @@ package pie;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -19,22 +18,31 @@ public class AllTest {
 	static PrintStream console;
 
 	private EstimatePi app = null;
+	@SuppressWarnings("unused")
+	private int exitCode;
 
 	@BeforeClass
 	public static void setUp() {
 		consoleText = new ByteArrayOutputStream();
-		console = System.out;
 		System.setOut(new PrintStream(consoleText));
+		System.setErr(new PrintStream(consoleText));
 	}
 
 	@AfterClass
 	public static void tearDown() {
-		System.setOut(console);
+		System.setOut(System.out);
+		System.setErr(System.err);
 	}
 
 	@Before
 	public void beforeEachTest() {
-		app = new EstimatePi();
+		consoleText.reset();
+		app = new EstimatePi() {
+			@Override
+			public void exitApp(int code) {
+				exitCode = code;
+			}
+		};
 	}
 
 	@Test
@@ -42,44 +50,36 @@ public class AllTest {
 		assertNotNull("app should not be null", app);
 	}
 
-	// @Test
-	public void test1Arg() {
-		String[] args = { "100000" };
-
-		app.init(args);
-		// assertEquals(EstimatePi.. );
-	}
-
-	// @Test
-	public void testNoArgs() {
-		String[] args = {};
-		app.init(args);
-		assertEquals(EstimatePi.MSG_WRONG_NUMBER_ARGS + EOL + EstimatePi.USAGE + EOL, consoleText.toString());
-	}
-
 	@Test
 	public void testArgsNotNumber() {
 		String[] args = { "bbb" };
 		app.init(args);
-		assertEquals(EstimatePi.MSG_MAX_N_NUMBER + EOL + EstimatePi.USAGE + EOL, consoleText.toString());
+		assertMessage(EstimatePi.MSG_MAX_N_NUMBER);
 	}
 
-	// @Test
-	public void testNZero() {
-		// double result = estimate.sum;
-		System.out.println("testNZero");
-
+	@Test
+	public void testWrongNumerArgs() {
+		String[] args = { "100000", "1000" };
+		app.init(args);
+		assertMessage(EstimatePi.MSG_WRONG_NUMBER_ARGS);
 	}
 
-	// @Test
-	public void NZeroTest() {
-		System.out.println("NZeroTest");
-		assertEquals(1, 0);
+	@Test
+	public void testNoArgs() {
+		String[] args = {};
+		app.init(args);
+		assertMessage(EstimatePi.MSG_WRONG_NUMBER_ARGS);
+	}
+	
+	@Test
+	public void testNegativeNumber() {
+		String[] args = {"-10000"};
+		app.init(args);
+		assertMessage(EstimatePi.MSG_MAX_N_POSITIVE);
 	}
 
-	// @Test
-	public void test() {
-		fail("Not yet implemented");
+	// helper method
+	private void assertMessage(String expectedMessage) {
+		assertEquals(expectedMessage + EOL + EstimatePi.USAGE + EOL, consoleText.toString());
 	}
-
 }

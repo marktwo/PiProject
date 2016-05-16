@@ -61,6 +61,12 @@ class EstimatePi {
 		est = new EstimatePi();
 		est.init(args);
 	}
+	
+	// required to support testing
+	// need to overide System.exit(), so that test runs to completion
+	public void exitApp(int exitCode) {
+		System.exit(exitCode);
+	}
 
 	/*
 	 * Validate the input args; get max_n
@@ -97,7 +103,7 @@ class EstimatePi {
 		} else {
 			System.out.println(errorMsg);
 			System.out.println(USAGE);
-			System.exit(1);
+			exitApp(1);
 		}
 	}
 
@@ -117,7 +123,7 @@ class EstimatePi {
 			try {
 				nTerms = scanner.nextInt();
 
-				if (nTerms < 1 || nTerms > max_n) {
+				if (nTerms < 0 || nTerms > max_n) {
 					System.out.println("n must be between 1 and " + max_n + ", please try again");
 				} else {
 					long tStart = System.currentTimeMillis();
@@ -133,7 +139,7 @@ class EstimatePi {
 				}
 			} catch (InputMismatchException e) {
 				System.out.println("Done.");
-				System.exit(0);
+				exitApp(0);
 			}
 		}
 	}
