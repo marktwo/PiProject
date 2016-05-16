@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class AllTest {
+public class AllTests {
 
 	static final String EOL = System.getProperty("line.separator");
 	static ByteArrayOutputStream consoleText;
